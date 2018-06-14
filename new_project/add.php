@@ -5,14 +5,13 @@ if($link === false){
     die("ERROR: Could not connect. " . mysqli_connect_error());
 }
 
-if(isset($_POST['un']) and isset($_POST['p']) and isset($_POST['id']) and isset($_POST['name']))
+if(isset($_POST['un']) and isset($_POST['p']) and isset($_POST['name']))
 {
     $un=$_POST['un'];
-    $id=$_POST['id'];
     $n=$_POST['name'];
     $p=$_POST['p'];
 
-    $query = "INSERT INTO admin(id,name,username,password)values('$id','$n','$un','$p')";
+    $query = "INSERT INTO admin(name,username,password)values('$n','$un','$p')";
    
     if(mysqli_query($link, $query)){
         echo "Records added successfully.";
@@ -32,21 +31,15 @@ mysqli_close($link);
 </head>
 <body>
     <form action="" method="post">
-    <table>
-        <tr>
-            <th>
-                Enter id :
-            </th>
-            <th>
-                <input type="text" name="id"/>
-            </th>
-        </tr>
+    <center>
+    <h1>New Admin Information</h1>
+    <table border=1>
         <tr>
             <th>
                 Enter Name :
             </th>
             <th>
-                <input type="text" name="name"/>
+                <input type="text" name="name" placeholder="Name"required/>
             </th>
         </tr>
         <tr>
@@ -54,7 +47,7 @@ mysqli_close($link);
                 Enter UserName :
             </th>
             <th>
-                <input type="text" name="un"/>
+                <input type="text" name="un"placeholder="UserName"required/>
             </th>
         </tr>
         <tr>
@@ -62,7 +55,7 @@ mysqli_close($link);
                 Enter Password :
             </th>
             <th>
-                <input type="password" name="p"/>
+                <input type="password" name="p"placeholder="Enter Password"required/>
             </th>
         </tr>
         <tr >
@@ -71,6 +64,7 @@ mysqli_close($link);
             </th>
         </tr>
     </table>
+    </center>
     </form>
 
 
