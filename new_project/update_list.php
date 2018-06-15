@@ -17,6 +17,7 @@ echo "
 <TH>ITEM-NAME</TH>
 <TH>ITEM-QUANTITY</TH>
 <TH>AVAILABLE-ITEMS</TH>
+<th>PRICE/ITEM</th>
 <th>UPDATE</th>
 <th>DELETE</th>
 <th>CheckBox</th>
@@ -33,6 +34,7 @@ while($row = mysqli_fetch_array($result))
     <th><input type="text" placeholder='.$row['name'].' name="name'.$i.'" value='.$row['name'].'></th>
     <th><input type="number" placeholder='.$row['quantity'].' name="quantity'.$i.'" value='.$row['quantity'].'></th>
     <th><input type="number" placeholder='.$row['available'].' name="available'.$i.'" value='.$row['available'].'></th>
+    <th><input type="number" placeholder='.$row['Price'].' name="price'.$i.'" value='.$row['Price'].'></th>
     <th><input type="submit" value="Update" name="address'.$i.'"/>
     <th><input type="submit" value="Delete" name="delete'.$i.'"/>
     <th><input type="checkbox"  name="check'.$i.'"/>
@@ -43,8 +45,12 @@ while($row = mysqli_fetch_array($result))
         if(isset($_POST['check'.$i.'']))
         {
             $idd=$_POST['id'.$i.''];
+            $n=$_POST['name'.$i.''];
             $query1 = "DELETE from items where id='$idd'";
             $result1 = mysqli_query($link, $query1) ;
+
+            $query2 = "DELETE from bill where name='$n'";
+            $result2 = mysqli_query($link, $query2) ;
 
             if(!query1)
             {
@@ -67,9 +73,16 @@ while($row = mysqli_fetch_array($result))
         $n=$_POST['name'.$i.''];
         $q=$_POST['quantity'.$i.''];
         $a=$_POST['available'.$i.''];
-
-        $query1 = "UPDATE items SET name='$n', quantity='$q', available='$a' where id='$idd'";
+        $p=$_POST['price'.$i.''];
+        if($n=='')
+        {
+        $n="None";
+        }
+        $query1 = "UPDATE items SET name='$n', quantity='$q', available='$a', Price='$p' where id='$idd'";
         $result1 = mysqli_query($link, $query1) ;
+
+        $query2 = "UPDATE bill SET name='$n', quantity='$q', available='$a', Price='$p' where name='$n'";
+        $result2 = mysqli_query($link, $query2) ;
 
         if(!query1)
         {
@@ -99,20 +112,21 @@ echo '
 <br>
 <br>
 <br>
-<table>
+<table border=2>
 <h1>ADD ITEM</h1>
 <tr>
-<th><input type="text" placeholder="Name" name="name" </th>
-<th><input type="number" placeholder="Quantity" name="quantity"</th>
-<th><input type="number" placeholder="Available" name="available"</th>
+<th><input type="text" placeholder="Name" name="name"  /></th>
+<th><input type="number" placeholder="Quantity" name="quantity" /></th>
+<th><input type="number" placeholder="Available" name="available"/></th>
+<th><input type="number" placeholder="Price" name="price"/></th>
 </tr>
 <tr>
-<th colspan=3>
+<th colspan=4>
 <input type="submit" name="add" value="ADD"/>
 </th>
 </tr>
 </table>
-
+<br>
 </form>
 
 
@@ -124,9 +138,16 @@ if(isset($_POST['add']))
     $n=$_POST['name'];
     $q=$_POST['quantity'];
     $a=$_POST['available'];
+    $p=$_POST['price'];
+    if($n=='')
+        {
+        $n="None";
+        }
+    $query = "INSERT INTO items(name,quantity,available,Price)values('$n','$q','$a','$p')";
+        
+    $query1 = "INSERT INTO bill(name,quantity,available,Price)values('$n','$q','$a','$p')";
+    mysqli_query($link, $query1);
 
-    $query = "INSERT INTO items(name,quantity,available)values('$n','$q','$a')";
-   
     if(mysqli_query($link, $query)){
         header("location:update_list.php");
     } else{
@@ -134,6 +155,17 @@ if(isset($_POST['add']))
     }
 }
 
+echo '
+<center>
+<br>
+<a href="list.php"><button>Check List</button></a>
+<br>
+</center>
+';
+
 
 mysqli_close($link);
+
+
 ?>
+

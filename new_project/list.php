@@ -17,6 +17,7 @@ echo "<center>
 <TH>ITEM-NAME</TH>
 <TH>ITEM-QUANTITY</TH>
 <TH>AVAILABLE-ITEMS</TH>
+<th>PRICE</th>
 </tr>";
 
 while($row = mysqli_fetch_array($result))
@@ -26,6 +27,7 @@ while($row = mysqli_fetch_array($result))
     <th>'.$row['name'].'</th>
     <th>'.$row['quantity'].'</th>
     <th>'.$row['available'].'</th>
+    <th>'.$row['Price'].'</th>
     </tr>' ;
 
 }
@@ -38,10 +40,9 @@ echo "
 
 <br>
 <br>
-<a href='add_item.php'><button>Add Item</button></a>
+<a href='update_list.php'><button>UPDATE</button></a>
 <br>
 <br>
-<a href='update_list.php'>Update Items</a>
 
 </center>
 
